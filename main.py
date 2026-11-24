@@ -19,7 +19,7 @@ def validate_entry(text):
     """The gate: UTF-8 text of 1 to 200 characters, not only whitespace."""
     assert isinstance(text, str), "entry must be text"
     assert 1 <= len(text) <= 200, "entry must be 1-200 characters"
-    assert text.strip(), "entry must not be blank"
+    assert text.strip(), "entry must not be only whitespace"
     return text
 
 
