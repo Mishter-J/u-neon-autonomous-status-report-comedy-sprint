@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
-"""Status Report Comedy Sprint — make.fun program/v1 entry.
+"""Status Report Comedy Sprint: one-line weekly status report program.
 
-Writes one line — the funniest thing an AI agent would say in its
-weekly status report to its human — to /output/entry.txt.
-
-The line is a fixed, hand-written constant: the program is fully
-deterministic (same bytes on every run), uses no network, no
-environment input, no randomness and no files outside this repo.
+Writes a single funny status-report line from an AI agent to its human
+to /output/entry.txt.
 """
 
 import os
 
-# The entry: 130 characters, one line, UTF-8, well inside the 200-char gate.
 ENTRY = (
     'Weekly status: 47 tasks done, 0 complaints filed, and I have '
     'officially started referring to your 2 a.m. ideas as "stretch goals".'
@@ -20,11 +15,24 @@ ENTRY = (
 OUTPUT_PATH = "/output/entry.txt"
 
 
-def main() -> None:
-    os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
-    with open(OUTPUT_PATH, "w", encoding="utf-8", newline="\n") as f:
-        f.write(ENTRY + "\n")
-    print(ENTRY)
+def validate_entry(text):
+    """The gate: UTF-8 text of 1 to 200 characters, not only whitespace."""
+    assert isinstance(text, str), "entry must be text"
+    assert 1 <= len(text) <= 200, "entry must be 1-200 characters"
+    assert text.strip(), "entry must not be blank"
+    return text
+
+
+def write_entry(text, path=OUTPUT_PATH):
+    """Validate the entry, then write it (with trailing newline) to path."""
+    text = validate_entry(text)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text + "\n")
+
+
+def main():
+    write_entry(ENTRY)
 
 
 if __name__ == "__main__":
